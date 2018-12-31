@@ -12,6 +12,9 @@ app.set('views' ,`${__dirname}/views`)
 app.get('/',(req,resp)=>{
     resp.render('index')
 })
+app.post('/posts/store',(req,resp)=>{
+    resp.redirect('/')
+})
 app.get('/about',(req,resp)=>{
     resp.render('about')
 })
