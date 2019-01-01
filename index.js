@@ -17,6 +17,8 @@ const loginUserController=require('./controllers/loginUser')
 const connectMongo = require('connect-mongo')
 const expressSession = require('express-session')
 const connectFlash= require('connect-flash')
+const edge = require('edge.js')
+const logoutController = require('./controllers/logout')
 mongoose.connect('mongodb://localhost/lost-found')
 
 //middlewares
@@ -30,6 +32,10 @@ app.use(expressSession({
 }))
 app.use(express.static('public'))
 app.use(expressEdge)
+app.use('*',(req,resp,next)=>{
+    edge.global('auth',req.session.userId)
+    next()
+})
 app.set('views' ,`${__dirname}/views`)
 app.use(fileUpload())
 app.use(bodyParser.json())
@@ -51,6 +57,8 @@ app.post('/user/login',redIfAuth,loginUserController)
 app.get('/auth/register',redIfAuth,createUserController)
 app.post('/auth/store',redIfAuth,storeUserController)
 app.get('/auth/login',redIfAuth,loginController)
+app.get('/user/logout',auth,logoutController)
+
 
 app.listen(4000,()=>{
     console.log("start listening!")
