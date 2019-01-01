@@ -14,9 +14,18 @@ const createUserController = require('./controllers/createUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController=require('./controllers/login')
 const loginUserController=require('./controllers/loginUser')
+const connectMongo = require('connect-mongo')
+const expressSession = require('express-session')
 mongoose.connect('mongodb://localhost/lost-found')
 
 //middleware
+const mongoStore = connectMongo(expressSession);
+app.use(expressSession({
+    secret:"secret",
+    store: new mongoStore({
+        mongooseConnection: mongoose.connection,
+    })
+}))
 app.use(express.static('public'))
 app.use(expressEdge)
 app.set('views' ,`${__dirname}/views`)

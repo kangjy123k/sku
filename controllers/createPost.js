@@ -1,3 +1,8 @@
 module.exports = (req,resp)=>{
-    resp.render('create')
+    if(req.session.userId){
+        resp.render('create')
+    }else{
+        resp.redirect('/auth/login')
+    }
+    
 }
