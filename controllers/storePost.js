@@ -7,10 +7,11 @@ module.exports = (req,resp)=>{
             console.log(req.files)
             Post.create({
                 ...req.body,
-                image: `/posts/${image.name}`
+                image: `/posts/${image.name}`,
+                author: req.session.userId
             },(error,post)=>{
                 console.log(error,post)
-                resp.redirect('/')
+                resp.redirect('/')//
             })
             
         }

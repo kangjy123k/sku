@@ -4,6 +4,6 @@ module.exports = (req,resp)=>{
     resp.render('register',{
         // data: req.flash('data'),
         errors: req.flash('registrationErrors'),
-        data: req.flash('data')[0]
+      //  data: req.flash('data')[0]
     })
 }
