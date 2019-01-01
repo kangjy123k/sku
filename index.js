@@ -36,21 +36,21 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 const storePost = require('./middleware/storePost')
 const auth = require('./middleware/auth')
-
+const redIfAuth = require('./middleware/redirectifAuth')
 // app.use('/posts/new',auth)
 // app.use('/posts/store',storePost)
 
-//url management
+//url managements
 app.get('/',homePageController)
 app.post('/posts/store',auth,storePost,storePostController)
 app.get('/posts/delete/:id',auth,deletePostController)
 app.post('/posts/update/:id',auth,updatePostController)
 app.get('/post/:id',getPostController)
 app.get('/posts/new',auth,createPostController)
-app.post('/user/login',loginUserController)
-app.get('/auth/register',createUserController)
-app.post('/auth/store',storeUserController)
-app.get('/auth/login',loginController)
+app.post('/user/login',redIfAuth,loginUserController)
+app.get('/auth/register',redIfAuth,createUserController)
+app.post('/auth/store',redIfAuth,storeUserController)
+app.get('/auth/login',redIfAuth,loginController)
 
 app.listen(4000,()=>{
     console.log("start listening!")
