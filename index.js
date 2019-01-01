@@ -4,14 +4,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const app = new express()
-
+const fileUpload = require('express-fileupload')
 const Post = require('./database/models/Post')
 
 mongoose.connect('mongodb://localhost/lost-found')
 app.use(express.static('public'))
 app.use(expressEdge)
 app.set('views' ,`${__dirname}/views`)
-
+app.use(fileUpload())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -24,10 +24,17 @@ app.get('/',async(req,resp)=>{
     })
 })
 app.post('/posts/store',(req,resp)=>{
-    
-    Post.create(req.body,(error,post)=>{
-        console.log(error,post)
-        resp.redirect('/')
+    const {image} = req.files;
+    image.mv(path.resolve(__dirname,'public/posts',image.name),(error)=>{
+        console.log(req.files)
+        Post.create({
+            ...req.body,
+            image: `/posts/${image.name}`
+        },(error,post)=>{
+            console.log(error,post)
+            resp.redirect('/')
+        })
+        
     })
     
 })
