@@ -1,5 +1,5 @@
-require('dotenv').config();
-console.log(process.env);
+// require('dotenv').config({ path: '.env' });
+//
 const expressEdge = require('express-edge')
 const express = require('express')
 const mongoose = require('mongoose')
@@ -21,13 +21,13 @@ const expressSession = require('express-session')
 const connectFlash= require('connect-flash')
 const edge = require('edge.js')
 const logoutController = require('./controllers/logout')
-mongoose.connect(process.env.DB_URI);
+mongoose.connect('mongodb://localhost/lost_found');
 
 //middlewares
 app.use(connectFlash())
 const mongoStore = connectMongo(expressSession);
 app.use(expressSession({
-    secret:process.env.EXPRESS_SESSION_KEY,
+    secret:'secret',
     store: new mongoStore({
         mongooseConnection: mongoose.connection,
     })
@@ -62,6 +62,6 @@ app.get('/auth/login',redIfAuth,loginController)
 app.get('/user/logout',auth,logoutController)
 app.use((req,res)=>res.render('not-found'))
 
-app.listen(process.env.PORT,()=>{
+app.listen(4000,()=>{
     console.log("start listening!")
 })
