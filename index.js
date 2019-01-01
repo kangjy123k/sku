@@ -12,6 +12,8 @@ const updatePostController=require('./controllers/updatePost')
 const deletePostController = require('./controllers/deletePost')
 const createUserController = require('./controllers/createUser')
 const storeUserController = require('./controllers/storeUser')
+const loginController=require('./controllers/login')
+const loginUserController=require('./controllers/loginUser')
 mongoose.connect('mongodb://localhost/lost-found')
 
 //middleware
@@ -31,8 +33,10 @@ app.get('/posts/delete/:id',deletePostController)
 app.post('/posts/update/:id',updatePostController)
 app.get('/post/:id',getPostController)
 app.get('/posts/new',createPostController)
+app.post('/user/login',loginUserController)
 app.get('/auth/register',createUserController)
 app.post('/auth/store',storeUserController)
+app.get('/auth/login',loginController)
 
 app.listen(4000,()=>{
     console.log("start listening!")
