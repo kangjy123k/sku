@@ -18,7 +18,7 @@ const connectMongo = require('connect-mongo')
 const expressSession = require('express-session')
 mongoose.connect('mongodb://localhost/lost-found')
 
-//middleware
+//middlewares
 const mongoStore = connectMongo(expressSession);
 app.use(expressSession({
     secret:"secret",
@@ -33,15 +33,18 @@ app.use(fileUpload())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 const storePost = require('./middleware/storePost')
-app.use('/posts/store',storePost)
+const auth = require('./middleware/auth')
+
+// app.use('/posts/new',auth)
+// app.use('/posts/store',storePost)
 
 //url management
 app.get('/',homePageController)
-app.post('/posts/store',storePostController)
-app.get('/posts/delete/:id',deletePostController)
-app.post('/posts/update/:id',updatePostController)
+app.post('/posts/store',auth,storePost,storePostController)
+app.get('/posts/delete/:id',auth,deletePostController)
+app.post('/posts/update/:id',auth,updatePostController)
 app.get('/post/:id',getPostController)
-app.get('/posts/new',createPostController)
+app.get('/posts/new',auth,createPostController)
 app.post('/user/login',loginUserController)
 app.get('/auth/register',createUserController)
 app.post('/auth/store',storeUserController)
