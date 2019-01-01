@@ -1,3 +1,6 @@
 module.exports = (req,resp)=>{
-    resp.render('register')
+   ////ccc
+    resp.render('register',{
+        errors: req.flash('registrationErrors')
+    })
 }

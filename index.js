@@ -16,9 +16,11 @@ const loginController=require('./controllers/login')
 const loginUserController=require('./controllers/loginUser')
 const connectMongo = require('connect-mongo')
 const expressSession = require('express-session')
+const connectFlash= require('connect-flash')
 mongoose.connect('mongodb://localhost/lost-found')
 
 //middlewares
+app.use(connectFlash())
 const mongoStore = connectMongo(expressSession);
 app.use(expressSession({
     secret:"secret",

@@ -10,6 +10,6 @@ module.exports=(req,resp,next)=>{
     //verify user
     //if user is valid permit request
    
-    //then redirect login page
+    //then redirect login page.
    
 }
