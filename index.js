@@ -1,87 +1,39 @@
-const path = require('path')
 const expressEdge = require('express-edge')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const app = new express()
 const fileUpload = require('express-fileupload')
-const Post = require('./database/models/Post')
-
+const createPostController = require('./controllers/createPost')
+const homePageController = require('./controllers/homePage')
+const storePostController = require('./controllers/storePost')
+const getPostController= require('./controllers/getPost')
+const updatePostController=require('./controllers/updatePost')
+const deletePostController = require('./controllers/deletePost')
 mongoose.connect('mongodb://localhost/lost-found')
+
+//middleware
 app.use(express.static('public'))
 app.use(expressEdge)
 app.set('views' ,`${__dirname}/views`)
 app.use(fileUpload())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+const validateCreatePostMiddleware = (req,res,next)=>{
+    if(!req.files.image || !req.body.location ||!req.body.date || !req.body.item || !req.body.description){
+        return res.redirect('/posts/new')
+    }
+    next();
+}
+app.use('/posts/store',validateCreatePostMiddleware)
 
-app.get('/',async(req,resp)=>{
-    const posts = await Post.find({})
-    console.log(posts)
-    resp.render('index',
-    {
-        posts
-    })
-})
-app.post('/posts/store',(req,resp)=>{
-    const {image} = req.files;
-    image.mv(path.resolve(__dirname,'public/posts',image.name),(error)=>{
-        console.log(req.files)
-        Post.create({
-            ...req.body,
-            image: `/posts/${image.name}`
-        },(error,post)=>{
-            console.log(error,post)
-            resp.redirect('/')
-        })
-        
-    })
-    
-})
-app.get('/posts/delete/:id',(req,resp)=>{
- Post.findOneAndDelete({'_id': req.params.id},
- (error1,post)=>{
-    console.log(error1,post);
-    resp.redirect('/');
-})
-})
-app.post('/posts/update/:id',(req,resp)=>{
-    console.log(req.params.id);
-    
-    //const query = {'_id':req.params.idw};
-    // var id = req.body.result._id;s
-    // delete result._id;s
-    Post.findOneAndUpdate({'_id': req.params.id}, 
-        {$set:{
-            location: req.body.location,
-            date: req.body.date,
-            item: req.body.item,
-            description: req.body.description
-        }},
-        (error1,post)=>{
-        console.log(error1,post);
-        resp.redirect('/')
-    })
-    
-})
-
-app.get('/about',(req,resp)=>{
-    resp.render('about')
-})
-app.get('/post/:id',async(req,resp)=>{
-    const post = await Post.findById(req.params.id)
-    
-    resp.render('post',{
-        post
-    })
-})
-app.get('/contact',(req,resp)=>{
-    resp.render('contact')
-})
-
-app.get('/posts/new',(req,resp)=>{
-    resp.render('create')
-})
+//url management
+app.get('/',homePageController)
+app.post('/posts/store',storePostController)
+app.get('/posts/delete/:id',deletePostController)
+app.post('/posts/update/:id',updatePostController)
+app.get('/post/:id',getPostController)
+app.get('/posts/new',createPostController)
 
 app.listen(4000,()=>{
     console.log("start listening!")
