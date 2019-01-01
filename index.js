@@ -19,13 +19,8 @@ app.set('views' ,`${__dirname}/views`)
 app.use(fileUpload())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
-const validateCreatePostMiddleware = (req,res,next)=>{
-    if(!req.files.image || !req.body.location ||!req.body.date || !req.body.item || !req.body.description){
-        return res.redirect('/posts/new')
-    }
-    next();
-}
-app.use('/posts/store',validateCreatePostMiddleware)
+const storePost = require('./middleware/storePost')
+app.use('/posts/store',storePost)
 
 //url management
 app.get('/',homePageController)
