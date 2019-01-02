@@ -49,3 +49,5 @@ Middleware:
     delete: click the delete button on specific post.
 *List Objects:
   Once you log in ,you can see your history post displayed on homepage
+ *Error page:
+  When you turn to the implicit link by mistake,it would return a 404 page.
