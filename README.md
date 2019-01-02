@@ -64,12 +64,12 @@ Inspired by  [Troov](https://www.troov.com)<br>
     
 ●Dos :
 ----    
-● Be versioned with GIT
-● Respect the concepts of an MVC application.
-● Be coded in Node.js only (so no client / server!)
-● The choice of templating motor is free. Ex: Pug, React ....
-● Use the Express.js library for the routing system
-● Using MongoDB as a database (BDD) through the Mongoose bookseller
-● Use a library like bcryptjs for encrypted (so no password in the clear!)
-● The choice of BDD model structure is free
-● Use a CSS library like Bootstrap    
+    ● Be versioned with GIT
+    ● Respect the concepts of an MVC application.
+    ● Be coded in Node.js only (so no client / server!)
+    ● The choice of templating motor is free. 
+    ● Use the Express.js library for the routing system
+    ● Using MongoDB as a database (BDD) through the Mongoose bookseller
+    ● Use a library like bcryptjs for encrypted (so no password in the clear!)
+    ● The choice of BDD model structure is free
+    ● Use a CSS library like Bootstrap    
